@@ -1,0 +1,5 @@
+@extends('layouts.app')
+@section('title','Booking details')
+@section('content')<div class="card"><h1>Booking #{{ $booking->id }}</h1><p class="muted">Keep this page to track your reservation.</p><p><b>Room:</b> {{ $booking->room->room_number }} — {{ $booking->room->type }}</p><p><b>Check-in:</b> {{ $booking->check_in->format('Y-m-d') }}</p><p><b>Check-out:</b> {{ $booking->check_out->format('Y-m-d') }}</p><p><b>Guests:</b> {{ $booking->guests }}</p><p><b>Total:</b> ${{ number_format($booking->total_price,2) }}</p><p><b>Status:</b> {{ str_replace('_',' ',ucfirst($booking->status)) }}</p>
+@if(in_array($booking->status,['pending','confirmed'],true) && $booking->check_in->isFuture())<form method="POST" action="{{ route('customer.bookings.cancel',$booking) }}" onsubmit="return confirm('Cancel this booking?')">@csrf @method('PATCH')<button class="btn red">Cancel booking</button></form>@endif
+<a class="btn gray" href="{{ route('customer.bookings.index') }}">Back to my bookings</a></div>@endsection
