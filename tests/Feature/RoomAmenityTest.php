@@ -57,4 +57,49 @@ class RoomAmenityTest extends TestCase
         $this->assertCount(2, $room->amenities);
         $this->assertEqualsCanonicalizing([$wifi->id, $pool->id], $room->amenities->pluck('id')->all());
     }
+
+    public function test_admin_can_remove_a_room_gallery_image(): void
+    {
+        $admin = User::create([
+            'name' => 'Admin User',
+            'email' => 'admin3@example.com',
+            'password' => bcrypt('password123'),
+            'role' => 'admin',
+        ]);
+
+        $hotel = Hotel::create([
+            'name' => 'Ocean View Hotel',
+            'city' => 'Kalutara',
+            'address' => '10 Beach Road',
+        ]);
+
+        $floor = Floor::create([
+            'hotel_id' => $hotel->id,
+            'floor_number' => 2,
+            'name' => 'Ocean Floor',
+        ]);
+
+        $room = \App\Models\Room::create([
+            'room_number' => '202',
+            'hotel_id' => $hotel->id,
+            'floor_id' => $floor->id,
+            'type' => 'Double',
+            'price_per_night' => 140,
+            'capacity' => 2,
+            'status' => 'available',
+            'description' => 'Double room',
+        ]);
+
+        $galleryImage = \App\Models\RoomImage::create([
+            'room_id' => $room->id,
+            'image_path' => 'rooms/gallery/old-photo.jpg',
+            'sort_order' => 0,
+        ]);
+
+        $response = $this->actingAs($admin)
+            ->delete('/admin/rooms/' . $room->id . '/gallery/' . $galleryImage->id);
+
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('room_images', ['id' => $galleryImage->id]);
+    }
 }

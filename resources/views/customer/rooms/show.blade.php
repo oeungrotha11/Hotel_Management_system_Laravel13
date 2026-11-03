@@ -5,12 +5,12 @@
     <div class="grid lg:grid-cols-[1.15fr_.85fr] gap-6 items-start">
         <section class="card !p-0 overflow-hidden">
             @if($room->main_image)
-                <img src="{{ IlluminateSupportFacadesStorage::url($room->main_image) }}" alt="Room {{ $room->room_number }}" class="w-full h-72 sm:h-[420px] object-cover">
+                <img src="{{ Illuminate\Support\Facades\Storage::url($room->main_image) }}" alt="Room {{ $room->room_number }}" class="w-full h-72 sm:h-[420px] object-cover">
             @else
                 <img src="https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=1200&q=85" alt="Comfortable hotel room" class="w-full h-72 sm:h-[420px] object-cover">
             @endif
             @if($room->roomImages->isNotEmpty())
-                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4">@foreach($room->roomImages as $image)<img src="{{ IlluminateSupportFacadesStorage::url($image->image_path) }}" alt="Room {{ $room->room_number }} gallery image" class="w-full h-28 object-cover rounded-xl">@endforeach</div>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 p-4">@foreach($room->roomImages as $image)<img src="{{ Illuminate\Support\Facades\Storage::url($image->image_path) }}" alt="Room {{ $room->room_number }} gallery image" class="w-full h-28 object-cover rounded-xl">@endforeach</div>
             @endif
         </section>
         <section class="card">

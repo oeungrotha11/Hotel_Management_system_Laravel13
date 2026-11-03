@@ -10,7 +10,7 @@
         @endif
 
         <label>Hotel
-            <select name="hotel_id" required>
+            <select name="hotel_id" required class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100">
                 <option value="">Select a hotel</option>
                 @foreach($hotels as $hotel)
                     <option value="{{ $hotel->id }}" @selected(old('hotel_id', $floor->hotel_id) == $hotel->id)>{{ $hotel->name }}</option>
@@ -19,11 +19,11 @@
         </label>
 
         <div class="row">
-            <label>Floor number<input type="number" min="1" max="100" name="floor_number" value="{{ old('floor_number', $floor->floor_number) }}" required></label>
-            <label>Name<input name="name" value="{{ old('name', $floor->name) }}" placeholder="e.g. Executive Floor"></label>
+            <label>Floor number<input type="number" min="1" max="100" name="floor_number" value="{{ old('floor_number', $floor->floor_number) }}" required class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100"></label>
+            <label>Name<input name="name" value="{{ old('name', $floor->name) }}" placeholder="e.g. Executive Floor" class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100"></label>
         </div>
 
-        <label>Description<textarea name="description" rows="4">{{ old('description', $floor->description) }}</textarea></label>
+        <label>Description<textarea name="description" rows="4" class="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100">{{ old('description', $floor->description) }}</textarea></label>
 
         <button class="btn">Save floor</button>
         <a class="btn gray" href="{{ route('admin.floors.index') }}">Cancel</a>

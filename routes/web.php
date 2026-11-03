@@ -65,9 +65,12 @@ Route::middleware(['auth', 'role:admin'])
             ->name('dashboard');
 
         Route::resource('rooms', RoomController::class);
+        Route::delete('/rooms/{room}/gallery/{galleryImage}', [RoomController::class, 'removeGalleryImage'])
+            ->name('rooms.gallery.destroy');
         Route::resource('bookings', BookingController::class);
         Route::resource('hotels', HotelController::class);
         Route::resource('floors', FloorController::class);
+        Route::resource('amenities', App\Http\Controllers\AmenityController::class);
 
         Route::get('/users', [AdminUserController::class, 'index'])
             ->name('users.index');

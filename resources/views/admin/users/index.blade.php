@@ -6,8 +6,8 @@
     <div class="card">
         <form method="GET" class="row">
             <div><label>Search name or email<input name="search" value="{{ request('search') }}"
-                        placeholder="Search users"></label></div>
-            <div><label>Role<select name="role">
+                        placeholder="Search users" class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100"></label></div>
+            <div><label>Role<select name="role" class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100">
                         <option value="">All roles</option>
                         <option value="customer" @selected(request('role') === 'customer')>Customer</option>
                         <option value="admin" @selected(request('role') === 'admin')>Admin</option>

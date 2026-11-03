@@ -11,8 +11,8 @@
     <div class="card">
         <form method="GET" action="{{ route('admin.rooms.index') }}" class="row">
             <div><label>Search by room number or type<input name="search" value="{{ request('search') }}"
-                        placeholder="e.g. 101 or Suite"></label></div>
-            <div><label>Status<select name="status">
+                        placeholder="e.g. 101 or Suite" class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100"></label></div>
+            <div><label>Status<select name="status" class="mt-2 w-full h-12 rounded-xl border border-slate-200 bg-white px-3 text-base text-slate-800 focus:border-blue-400 focus:outline-none focus:ring-4 focus:ring-blue-100">
                         <option value="">All statuses</option>@foreach(['available', 'occupied', 'maintenance'] as $status)
                             <option value="{{ $status }}" @selected(request('status') === $status)>{{ ucfirst($status) }}</option>
                         @endforeach

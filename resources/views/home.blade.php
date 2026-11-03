@@ -7,6 +7,7 @@
                 <span class="feature-chip !bg-white/15 !text-white border border-white/20">A better way to stay</span>
                 <h1>Find a stay that<br class="hidden sm:block"> feels like <span class="text-blue-200">your own.</span></h1>
                 <p class="text-blue-100 leading-7 max-w-xl mb-7">Thoughtfully selected rooms, simple reservations, and the comfort you need to make every trip feel special.</p>
+                <p class="text-xl font-extrabold text-white mb-4">Book your stay</p>
                 <div class="flex flex-wrap gap-3">
                     <a class="btn !bg-white !text-blue-800 hover:!bg-blue-50 !px-5 !py-3" href="{{ route('customer.rooms.index') }}">Explore rooms <span>→</span></a>
                     @guest<a class="btn !bg-white/10 !border-white/30 hover:!bg-white/20 !px-5 !py-3" href="{{ route('register') }}">Join StayEase</a>@endguest
@@ -32,7 +33,11 @@
         <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-5">
             @forelse($hotels as $hotel)
                 <article class="card !p-0 overflow-hidden !mb-0">
-                    <div class="h-36 bg-gradient-to-br from-slate-100 to-blue-100 grid place-items-center text-4xl text-blue-300">⌂</div>
+                    @if($hotel->cover_image)
+                        <img src="{{ asset('storage/' . $hotel->cover_image) }}" alt="{{ $hotel->name }}" class="h-36 w-full object-cover bg-slate-100">
+                    @else
+                        <div class="h-36 bg-gradient-to-br from-slate-100 to-blue-100 grid place-items-center text-4xl text-blue-300">⌂</div>
+                    @endif
                     <div class="p-5"><span class="feature-chip">StayEase property</span><h3 class="text-lg font-extrabold mt-3">{{ $hotel->name }}</h3><p class="text-sm text-slate-500 mt-1">⌖ {{ $hotel->city }}</p><p class="text-sm text-slate-500 mt-3">{{ $hotel->address ?: 'A convenient location for your next stay.' }}</p><p class="text-xs text-slate-500 mt-4"><strong class="text-slate-800">{{ $hotel->rooms_count }}</strong> rooms in this property</p></div>
                 </article>
             @empty
@@ -44,7 +49,7 @@
         <div class="section-header"><div><p class="text-xs uppercase tracking-[.15em] text-blue-600 font-extrabold mb-2">HANDPICKED FOR YOU</p><h2>Rooms worth staying in</h2></div><a class="btn gray" href="{{ route('customer.rooms.index') }}">View all rooms →</a></div>
         <div class="room-grid">
             @forelse($featuredRooms as $room)
-                @php($featuredImage = $room->main_image ? IlluminateSupportFacadesStorage::url($room->main_image) : 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80')
+                @php($featuredImage = $room->main_image ? \Illuminate\Support\Facades\Storage::url($room->main_image) : 'https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=900&q=80')
                 <article class="card room-card !mb-0">
                     <img src="{{ $featuredImage }}" alt="Room {{ $room->room_number }}">
                     <div class="room-card-body"><p class="text-xs text-slate-500">{{ $room->hotel?->name ?? 'StayEase property' }} · {{ $room->type }}</p><h3>Room {{ $room->room_number }}</h3><div class="room-price">${{ number_format($room->price_per_night, 2) }} <small class="muted text-xs font-normal">/ night</small></div><p>{{ $room->description ?: 'A welcoming room with the essentials for a comfortable stay.' }}</p>@if($room->amenities->isNotEmpty())<p class="muted">{{ $room->amenities->pluck('name')->implode(' · ') }}</p>@endif<div class="mt-3"><a class="btn" href="{{ route('customer.rooms.show', $room) }}">View room details →</a></div></div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hotel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class HotelController extends Controller
 {
@@ -26,8 +27,12 @@ class HotelController extends Controller
             'city' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'cover_image' => 'nullable|string|max:255',
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         ]);
+
+        if ($request->hasFile('cover_image')) {
+            $data['cover_image'] = $request->file('cover_image')->store('hotels', 'public');
+        }
 
         Hotel::create($data);
 
@@ -51,8 +56,16 @@ class HotelController extends Controller
             'city' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1000',
-            'cover_image' => 'nullable|string|max:255',
+            'cover_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,webp', 'max:2048'],
         ]);
+
+        if ($request->hasFile('cover_image')) {
+            if ($hotel->cover_image && Storage::disk('public')->exists($hotel->cover_image)) {
+                Storage::disk('public')->delete($hotel->cover_image);
+            }
+
+            $data['cover_image'] = $request->file('cover_image')->store('hotels', 'public');
+        }
 
         $hotel->update($data);
 
@@ -63,6 +76,10 @@ class HotelController extends Controller
     {
         if ($hotel->rooms()->exists()) {
             return back()->with('error', 'Cannot delete a hotel that still has rooms.');
+        }
+
+        if ($hotel->cover_image && Storage::disk('public')->exists($hotel->cover_image)) {
+            Storage::disk('public')->delete($hotel->cover_image);
         }
 
         $hotel->delete();

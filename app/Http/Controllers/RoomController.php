@@ -74,6 +74,22 @@ class RoomController extends Controller
 
         return redirect()->route('admin.rooms.index')->with('success', 'Room updated.');
     }
+
+    public function removeGalleryImage(Room $room, RoomImage $galleryImage)
+    {
+        if ($galleryImage->room_id !== $room->id) {
+            abort(404);
+        }
+
+        if ($galleryImage->image_path && Storage::disk('public')->exists($galleryImage->image_path)) {
+            Storage::disk('public')->delete($galleryImage->image_path);
+        }
+
+        $galleryImage->delete();
+
+        return back()->with('success', 'Room image removed.');
+    }
+
     public function destroy(Room $room)
     {
         if ($room->bookings()->exists()) return back()->with('error', 'Cannot delete a room that has bookings.');
